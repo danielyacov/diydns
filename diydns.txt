@@ -1,0 +1,63 @@
+sudo -s
+cd
+sudo apt update
+sudo apt upgrade
+curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh -s -- -v
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+apt install python3-pip
+pip3 install --upgrade certbot-dns-dynudns --break-system-packages
+sudo nano ~/dynu.ini 
+
+dns_dynu_auth_token = ZWT76V5b653Y35V4Wa4T6d73TT3gc763
+
+sudo chmod 600 ~/dynu.ini
+certbot --authenticator dns-dynu --dns-dynu-credentials ~/dynu.ini certonly  
+sudo certbot renew --dry-run
+
+run this check after you run the code above the real name of conf file
+sudo nano /etc/letsencrypt/renewal/diydns.kozow.com-0001.conf
+
+add this line
+dns_dynu_propagation_seconds = 120
+renew_hook = sudo systemctl restart AdGuardHome.service
+
+location of files
+change the domain for what you want
+Certificate is saved at: /etc/letsencrypt/live/dydns.kozow.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/dydns.kozow.com/privkey.pem
+
+
+can help
+sudo systemctl stop AdGuardHome.service
+sudo systemctl start AdGuardHome.service
+sudo systemctl restart AdGuardHome.service
+
+when lan run
+systemctl status AdGuardHome.service | grep Active
+
+when the cert expair
+certbot certificates
+
+
+enter configuration of adguard
+sudo nano /opt/AdGuardHome/AdGuardHome.yaml
+
+
+ssh -L 8080:127.0.0.1:8080 diydns@192.168.1.161
+
+scp root@45.93.93.184:/etc/letsencrypt/live/diydns.kozow.com-0001/fullchain.pem .
+
+scp root@45.93.93.184:/etc/letsencrypt/live/diydns.kozow.com-0001/privkey.pem .
+
+
+scp root@45.93.93.184:/etc/letsencrypt/live/diydns.kozow.com-0001/fullchain.pem diydns@164.138.112.45:/tmp/
+
+scp root@45.93.93.184:/etc/letsencrypt/live/diydns.kozow.com-0001/privkey.pem diydns@164.138.112.45:/tmp/
+
+ 	        45.93.93.184
+ 	
+ 	 	164.138.112.45
+
+
+
